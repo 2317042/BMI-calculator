@@ -1,0 +1,33 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'main', url: 'https://github.com/2317042/BMI-calculator.git'
+            }
+        }
+
+        stage('Install Python Dependencies') {
+            steps {
+                bat 'python -m pip install --upgrade pip'
+                bat 'python -m pip install flask'
+            }
+        }
+
+        stage('Run Flask App') {
+            steps {
+                bat 'python p4.py'  // Replace 'bmi_backend.py' with your Python file name
+            }
+        }
+    }
+
+    post {
+        always {
+            echo 'BMI Calculator Pipeline Finished'
+        }
+        failure {
+            echo 'Pipeline Failed'
+        }
+    }
+}
